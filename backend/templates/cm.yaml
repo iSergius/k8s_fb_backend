@@ -1,0 +1,12 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "backend.fullname" . }}-config
+  labels: {{- include "backend.labels" . | nindent 4 }}
+data:
+  DB_HOST: postgresql
+  DB_PORT: "5432"
+  DB_NAME: mconveyor
+  DB_USER: manager
+  DB_PASSWORD: manager
+

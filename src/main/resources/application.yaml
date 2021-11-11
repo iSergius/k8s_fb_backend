@@ -1,0 +1,39 @@
+backend:
+  app:
+    vendor: isergius
+    projectName: k8s_fb
+    serviceName: backend
+    protocol: http
+    host: ${EXPOSED_HOST:backend}
+    port: ${EXPOSED_PORT:8081}
+  db:
+    protocol: jdbc
+    host: ${DB_HOST:postgresql}
+    port: ${DB_PORT:5432}
+    databaseName: ${DB_NAME:backend}
+    databaseSchema: ${backend.app.serviceName}
+    username: ${backend.db.databaseSchema}
+    password: ${backend.db.databaseSchema}
+
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${backend.db.protocol}:postgresql://${backend.db.host}:${backend.db.port}/${backend.db.databaseName}?currentSchema=${backend.db.databaseSchema}
+    username: ${backend.db.username}
+    password: ${backend.db.password}
+    hikari:
+      connectionTimeout: 10000
+      maximumPoolSize: 50
+      idleTimeout: 60000
+      maxLifetime: 3600000
+      minimumIdle: 2
+      auto-commit: true
+    tomcat:
+      max-idle: 2
+      min-idle: 2
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework: INFO
+    org.hibernate.type: INFO
